@@ -1,35 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import "./App.css";
+import { useCandidateContext } from "@/hooks";
+import { CandidateLoginPage, JobsPage } from "@/pages";
+import { SettingsBar } from "@/components";
 
+// Main application component
+// Handles the authentication flow by showing:
+// - SettingsBar always visible at the top
+// - CandidateLoginPage if there's no authenticated candidate
+// - JobsPage if the candidate is already authenticated
+// - Loading spinner while verifying the initial session
 function App() {
-  const [count, setCount] = useState(0)
+  const { candidate, loading } = useCandidateContext();
+
+  if (loading) {
+    return (
+      <div className="loading-screen">
+        <div className="loading-spinner"></div>
+      </div>
+    );
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="App">
+      <SettingsBar />
+      {!candidate ? <CandidateLoginPage /> : <JobsPage />}
+    </div>
+  );
 }
 
-export default App
+export default App;

@@ -1,0 +1,33 @@
+.jobs-header {
+  padding: 40px 0;
+  border-bottom: 1px solid var(--overlay-light);
+  margin-bottom: 40px;
+  animation: slideDown 0.5s ease-out;
+  transition: border-color 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.jobs-title {
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+  transition: color 0.3s ease;
+}
+
+.jobs-subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
+}

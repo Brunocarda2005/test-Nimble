@@ -1,0 +1,206 @@
+.settings-bar {
+  position: fixed;
+  top: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 500;
+  animation: fadeInDown 0.5s ease-out;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.settings-bar-scrolled {
+  top: 24px;
+  left: 24px;
+  transform: translateX(0) scale(0.9);
+  animation: slideToLeft 0.4s ease-out;
+}
+
+@keyframes slideToLeft {
+  from {
+    opacity: 0.8;
+    transform: translateX(-50%) scale(1);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(0.9);
+  }
+}
+
+.settings-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-glow);
+  border-radius: 50px;
+  padding: 8px 16px;
+  box-shadow:
+    var(--shadow-lg),
+    0 0 0 1px var(--overlay-border),
+    0 0 60px var(--glow-secondary);
+  backdrop-filter: blur(10px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.settings-container:hover {
+  box-shadow:
+    0 12px 40px var(--glow-secondary),
+    0 0 0 1px var(--overlay-border),
+    0 0 80px var(--glow-primary);
+  transform: translateY(-2px);
+}
+
+.settings-bar-scrolled .settings-container {
+  gap: 12px;
+  padding: 6px 12px;
+  box-shadow:
+    var(--shadow-md),
+    0 0 40px var(--glow-secondary);
+}
+
+.settings-bar-scrolled .settings-container:hover {
+  transform: translateY(-1px);
+}
+
+.settings-control {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: gap 0.4s ease;
+}
+
+.settings-bar-scrolled .settings-control {
+  gap: 0;
+}
+
+.settings-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.settings-toggle {
+  position: relative;
+  width: 5rem;
+  height: 32px;
+  background: var(--overlay-light);
+  border: 1px solid var(--overlay-border);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px;
+  overflow: hidden;
+}
+
+.settings-bar-scrolled .settings-toggle {
+  height: 28px;
+  width: 4.5rem;
+}
+
+.settings-toggle:hover {
+  background: var(--overlay-medium);
+  border-color: var(--accent);
+  box-shadow: 0 0 16px var(--glow-primary);
+  transform: translateY(-1px);
+}
+
+.toggle-option {
+  font-size: 13px;
+  font-weight: 600;
+  z-index: 2;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.settings-bar-scrolled .toggle-option {
+  font-size: 12px;
+}
+
+.settings-toggle:not(.active) .toggle-option:first-child,
+.settings-toggle.active .toggle-option:last-child {
+  color: var(--text-primary);
+}
+
+.settings-toggle:not(.active) .toggle-option:last-child,
+.settings-toggle.active .toggle-option:first-child {
+  color: var(--text-muted);
+}
+
+.toggle-slider {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 26px;
+  height: 26px;
+  background: linear-gradient(135deg, var(--accent), #8b5cf6);
+  border-radius: 50%;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(92, 119, 255, 0.5);
+}
+
+.settings-bar-scrolled {
+  .toggle-slider {
+    width: 22px;
+    height: 22px;
+    left: 4px;
+  }
+
+  .settings-toggle.active .toggle-slider {
+    transform: translateX(180%);
+  }
+}
+
+.settings-toggle.active .toggle-slider {
+  transform: translateX(175%);
+}
+
+@media (max-width: 640px) {
+  .settings-bar {
+    top: 16px;
+  }
+
+  .settings-bar-scrolled {
+    top: 12px;
+    left: 12px;
+    transform: translateX(0) scale(0.85);
+  }
+
+  .settings-container {
+    gap: 12px;
+    padding: 6px 12px;
+  }
+
+  .settings-label {
+    font-size: 12px;
+  }
+
+  .settings-bar-scrolled .settings-label {
+    display: none;
+  }
+
+  .settings-toggle {
+    width: 4.5rem;
+    height: 28px;
+  }
+
+  .settings-bar-scrolled .settings-toggle {
+    width: 4rem;
+    height: 26px;
+  }
+}
