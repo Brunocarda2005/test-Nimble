@@ -143,6 +143,9 @@ npm run build
 
 # Preview production build locally
 npm run preview
+
+# Deploy to GitHub Pages
+npm run deploy
 ```
 
 ## 🌐 Deployment
@@ -150,9 +153,14 @@ npm run preview
 This project is deployed on GitHub Pages:
 
 - **Live URL**: [https://brunocarda2005.github.io/test-Nimble/](https://brunocarda2005.github.io/test-Nimble/)
-- **Method**: Manual deployment of `dist` folder to `gh-pages` branch
+- **Deployment Command**: `npm run deploy` - Builds and deploys to `gh-pages` branch automatically
 - **Build**: Optimized production build with Vite
-- **Base Path**: Configured in `vite.config.ts` for GitHub Pages subdirectory
+- **Base Path**: Configured in `vite.config.ts` as `/test-Nimble/` for GitHub Pages subdirectory
+
+To deploy updates, simply run:
+```bash
+npm run deploy
+```
 
 ## 📂 Project Structure
 
@@ -231,7 +239,5 @@ I'm genuinely excited about the opportunity to work with **Nimble Gravity** and 
 Looking forward to discussing this project further and exploring how I can contribute to Nimble Gravity's success! 🎯
 
 ---
-
-**Built with ❤️ for Nimble Gravity**
 
 **Built with ❤️ for Nimble Gravity**
