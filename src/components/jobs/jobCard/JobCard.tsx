@@ -9,7 +9,7 @@ import "./JobCard.css";
 
 /**
  * Props for the JobCard component.
- * 
+ *
  * @property job - Information about the available job (id, title, description).
  * @property candidate - Data of the candidate who is applying (uuid, candidateId).
  */
@@ -30,9 +30,9 @@ interface ApplicationState {
 
 /**
  * JobCard
- * 
+ *
  * Component that represents an individual job offer card.
- * 
+ *
  * Functionality:
  * - Displays job information (title and ID).
  * - Provides a form for the candidate to enter their GitHub repository URL.
@@ -40,24 +40,24 @@ interface ApplicationState {
  * - Sends the application to the API when the form is valid.
  * - Manages loading, error, and success states independently.
  * - Automatically clears the form after a successful application.
- * 
+ *
  * Validations:
  * - The URL cannot be empty.
  * - The URL must be a valid GitHub repository.
  * - The format is validated using the isValidGitHubUrl utility.
- * 
+ *
  * States:
  * - repoUrl: URL entered by the user.
  * - isSubmitting: Indicates whether a request is in progress.
  * - error: Error message to display.
  * - isSuccess: Indicates whether the application was successful.
- * 
+ *
  * @param props - JobCardProps with the job and candidate information.
  * @returns React element that renders the job card with its form.
  */
 const JobCard: React.FC<JobCardProps> = ({ job, candidate }) => {
   const { t } = useTranslation();
-  
+
   const [state, setState] = useState<ApplicationState>({
     repoUrl: $Default.EMPTY_STRING,
     isSubmitting: false,
@@ -67,14 +67,14 @@ const JobCard: React.FC<JobCardProps> = ({ job, candidate }) => {
 
   /**
    * Updates the application state partially.
-   * 
+   *
    * @param updates - Object with the state properties to update.
    */
   const updateState = useCallback(
     (updates: Partial<ApplicationState>): void => {
       setState((prevState) => ({ ...prevState, ...updates }));
     },
-    []
+    [],
   );
 
   /**
@@ -90,10 +90,10 @@ const JobCard: React.FC<JobCardProps> = ({ job, candidate }) => {
 
   /**
    * Handler for changes in the repository URL input.
-   * 
+   *
    * Updates the state with the new URL and clears any previous error or success messages.
    * This provides immediate and clean feedback when the user corrects errors.
-   * 
+   *
    * @param url - New URL entered by the user.
    */
   const handleRepoUrlChange = useCallback(
@@ -101,16 +101,16 @@ const JobCard: React.FC<JobCardProps> = ({ job, candidate }) => {
       updateState({ repoUrl: url });
       clearMessages();
     },
-    [updateState, clearMessages]
+    [updateState, clearMessages],
   );
 
   /**
    * Validates the repository URL entered by the user.
-   * 
+   *
    * Performs two levels of validation:
    * 1. Verifies that the URL is not empty after removing spaces.
    * 2. Validates that it is a valid GitHub URL using isValidGitHubUrl.
-   * 
+   *
    * @param url - Repository URL to validate.
    * @returns Object with the validation state and error message if applicable.
    */
@@ -132,16 +132,16 @@ const JobCard: React.FC<JobCardProps> = ({ job, candidate }) => {
         errorMessage: valid ? $Default.EMPTY_STRING : message,
       };
     },
-    []
+    [],
   );
 
   /**
    * Sends the candidate's application to the API.
-   * 
+   *
    * Builds the payload with the candidate and job information,
    * then makes the request to the service. If the response is successful,
    * updates the state to show the success message and clears the form.
-   * 
+   *
    * @param url - Validated repository URL.
    * @throws Error if the request fails.
    */
@@ -151,6 +151,7 @@ const JobCard: React.FC<JobCardProps> = ({ job, candidate }) => {
         uuid: candidate.uuid,
         jobId: job.id,
         candidateId: candidate.candidateId,
+        applicationId: candidate.applicationId,
         repoUrl: url,
       };
 
@@ -164,12 +165,12 @@ const JobCard: React.FC<JobCardProps> = ({ job, candidate }) => {
         });
       }
     },
-    [candidate, job, updateState]
+    [candidate, job, updateState],
   );
 
   /**
    * Main handler for form submission.
-   * 
+   *
    * Execution flow:
    * 1. Prevents the default form behavior.
    * 2. Validates the repository URL.
@@ -177,7 +178,7 @@ const JobCard: React.FC<JobCardProps> = ({ job, candidate }) => {
    * 4. If validation passes, activates loading state and sends the application.
    * 5. Handles API errors and displays them to the user.
    * 6. Finalizes the loading state regardless of the result.
-   * 
+   *
    * @param e - Form event.
    */
   const handleSubmit = useCallback(
@@ -196,20 +197,18 @@ const JobCard: React.FC<JobCardProps> = ({ job, candidate }) => {
       try {
         await submitApplication(state.repoUrl.trim());
       } catch (err) {
-        const errorMsg = isError(err)
-          ? err.message
-          : errors.APPLICATION_FAILED;
+        const errorMsg = isError(err) ? err.message : errors.APPLICATION_FAILED;
         updateState({ error: errorMsg });
       } finally {
         updateState({ isSubmitting: false });
       }
     },
-    [state.repoUrl, validateRepositoryUrl, submitApplication, updateState]
+    [state.repoUrl, validateRepositoryUrl, submitApplication, updateState],
   );
 
   /**
    * Determines whether the submit button should be disabled.
-   * 
+   *
    * @returns true if submitting or the URL is empty.
    */
   const isSubmitDisabled = (): boolean => {
@@ -218,7 +217,7 @@ const JobCard: React.FC<JobCardProps> = ({ job, candidate }) => {
 
   /**
    * Gets the submit button text based on the current state.
-   * 
+   *
    * @returns Translated text for the button.
    */
   const getSubmitButtonText = (): string => {
@@ -250,9 +249,7 @@ const JobCard: React.FC<JobCardProps> = ({ job, candidate }) => {
             onChange={(e) => handleRepoUrlChange(e.target.value)}
             disabled={state.isSubmitting}
             aria-invalid={!!state.error}
-            aria-describedby={
-              state.error ? `error-${job.id}` : undefined
-            }
+            aria-describedby={state.error ? `error-${job.id}` : undefined}
           />
         </div>
 
@@ -268,11 +265,7 @@ const JobCard: React.FC<JobCardProps> = ({ job, candidate }) => {
         )}
 
         {state.isSuccess && (
-          <div
-            className="success-message"
-            role="status"
-            aria-live="polite"
-          >
+          <div className="success-message" role="status" aria-live="polite">
             {t("applicationSuccess")}
           </div>
         )}
