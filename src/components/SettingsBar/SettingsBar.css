@@ -92,25 +92,27 @@
   white-space: nowrap;
 }
 
+/* ─── Toggle base ─────────────────────────────────────────────────────────── */
+/*
+ * Track (normal): 70 × 32 px  |  border: 1 px  |  inner: 68 × 30 px
+ * Gap (all sides): 3 px
+ * Blob: 30 − 2×3 = 24 px
+ * Travel: 68 − 3(left-gap) − 24(blob) − 3(right-gap) = 38 px
+ */
 .settings-toggle {
   position: relative;
-  width: 5rem;
+  width: 70px;
   height: 32px;
   background: var(--overlay-light);
   border: 1px solid var(--overlay-border);
-  border-radius: 16px;
+  border-radius: 999px;
   cursor: pointer;
   transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 8px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: stretch;
+  padding: 0;
   overflow: hidden;
-}
-
-.settings-bar-scrolled .settings-toggle {
-  height: 28px;
-  width: 4.5rem;
 }
 
 .settings-toggle:hover {
@@ -121,17 +123,20 @@
 }
 
 .toggle-option {
-  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 12px;
   font-weight: 600;
   z-index: 2;
-  transition: all 0.3s ease;
+  transition: color 0.3s ease;
   user-select: none;
+  line-height: normal;
+  padding-bottom: 0;
 }
 
-.settings-bar-scrolled .toggle-option {
-  font-size: 12px;
-}
-
+/* Left option active (not active = EN / 🌙 is highlighted) */
 .settings-toggle:not(.active) .toggle-option:first-child,
 .settings-toggle.active .toggle-option:last-child {
   color: var(--text-primary);
@@ -142,32 +147,50 @@
   color: var(--text-muted);
 }
 
+/* ─── Blob ─────────────────────────────────────────────────────────────────── */
+/*
+ * inner 68px  |  col-center = 34px  |  blob = 24px  |  left = 34/2 − 24/2 = 5px
+ * Travel: 68 − 5 − 24 − 5 = 34 px  →  center lands on 5+12=17 = col-center ✓
+ */
 .toggle-slider {
   position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 26px;
-  height: 26px;
+  top: 3px;
+  left: 5px;
+  width: 24px;
+  height: 24px;
   background: linear-gradient(135deg, var(--accent), #8b5cf6);
   border-radius: 50%;
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 2px 8px rgba(92, 119, 255, 0.5);
+  z-index: 1;
 }
 
-.settings-bar-scrolled {
-  .toggle-slider {
-    width: 22px;
-    height: 22px;
-    left: 4px;
-  }
-
-  .settings-toggle.active .toggle-slider {
-    transform: translateX(180%);
-  }
-}
-
+/* Travel: 68 − 5 − 24 − 5 = 34 px */
 .settings-toggle.active .toggle-slider {
-  transform: translateX(175%);
+  transform: translateX(34px);
+}
+
+/* ─── Scrolled (smaller) ───────────────────────────────────────────────────── */
+/*
+ * Track (scrolled): 62 × 28 px  |  border: 1 px  |  inner: 60 × 26 px
+ * col-width = 30 px  |  col-center = 15 px
+ * Blob: 20 × 20 px  |  left = 15 − 10 = 5 px  |  top = (26−20)/2 = 3 px
+ * Travel: 60 − 5 − 20 − 5 = 30 px  →  center lands on 5+10=15 = col-center ✓
+ */
+.settings-bar-scrolled .settings-toggle {
+  width: 62px;
+  height: 28px;
+}
+
+.settings-bar-scrolled .toggle-slider {
+  top: 3px;
+  left: 5px;
+  width: 20px;
+  height: 20px;
+}
+
+.settings-bar-scrolled .settings-toggle.active .toggle-slider {
+  transform: translateX(30px);
 }
 
 @media (max-width: 640px) {
@@ -194,13 +217,47 @@
     display: none;
   }
 
+  /*
+   * Mobile track: 62 × 28 px  |  inner: 60 × 26
+   * col-width = 30 px  |  col-center = 15 px
+   * Blob: 20 × 20 px  |  left = 5 px  |  top = 3 px
+   * Travel: 60 − 5 − 20 − 5 = 30 px  →  center = 5+10 = 15 ✓
+   */
   .settings-toggle {
-    width: 4.5rem;
+    width: 62px;
     height: 28px;
   }
 
+  .settings-toggle .toggle-slider {
+    top: 3px;
+    left: 5px;
+    width: 20px;
+    height: 20px;
+  }
+
+  .settings-toggle.active .toggle-slider {
+    transform: translateX(30px);
+  }
+
+  /*
+   * Mobile scrolled track: 54 × 26 px  |  inner: 52 × 24
+   * col-width = 26 px  |  col-center = 13 px
+   * Blob: 18 × 18 px  |  left = 13 − 9 = 4 px  |  top = (24−18)/2 = 3 px
+   * Travel: 52 − 4 − 18 − 4 = 26 px  →  center = 4+9 = 13 ✓
+   */
   .settings-bar-scrolled .settings-toggle {
-    width: 4rem;
+    width: 54px;
     height: 26px;
+  }
+
+  .settings-bar-scrolled .toggle-slider {
+    top: 3px;
+    left: 4px;
+    width: 18px;
+    height: 18px;
+  }
+
+  .settings-bar-scrolled .settings-toggle.active .toggle-slider {
+    transform: translateX(26px);
   }
 }
