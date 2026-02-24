@@ -158,6 +158,7 @@ This project is deployed on GitHub Pages:
 - **Base Path**: Configured in `vite.config.ts` as `/test-Nimble/` for GitHub Pages subdirectory
 
 To deploy updates, simply run:
+
 ```bash
 npm run deploy
 ```

@@ -98,6 +98,9 @@
   padding: 8px 16px;
   background: var(--overlay-light);
   border: 1px solid var(--overlay-border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
   border-radius: 6px;
   color: var(--text-primary);
   font-size: 14px;
@@ -135,4 +138,18 @@
 
 .logout-button:active {
   transform: translateY(0);
+}
+
+.logout-button-icon {
+  flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+  .logout-button {
+    padding: 8px;
+  }
+
+  .logout-button-text {
+    display: none;
+  }
 }
